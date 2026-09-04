@@ -11,7 +11,7 @@ if "ans4_val" not in st.session_state:
     st.session_state.ans4_val = ""
 
 
-  st.divider()
+st.divider()
 
 # 3. ช่องรับคำตอบ (ใช้ value ผูกกับตัวแปรตรงๆ เพื่อสั่งเคลียร์ได้)
 product1 = st.text_input(
