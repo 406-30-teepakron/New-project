@@ -7,48 +7,52 @@ st.title("☕ jkop cafe - Smart POS & Discount System")
 st.caption("ระบบคิดเงินและคำนวณส่วนลดร้านกาแฟ (แอปพลิเคชันสำหรับ Smart Shop)")
 
 # ----------------------------------------------------
-# 1. รายการสินค้า 10 เมนูเครื่องดื่ม
+# 1. รายการสินค้า (หมวดเครื่องดื่ม และ เบเกอรี)
 # ----------------------------------------------------
-menu_items = {
+drinks_menu = {
     "☕ เอสเปรสโซร้อน (Hot Espresso)": 45,
     "🧊 อเมริกาโนเย็น (Iced Americano)": 50,
-    "🥛 ลาเต้เย็น (Iced Latte)": 60,
-    "🥤 คาปูชิโนเย็น (Iced Cappuccino)": 60,
-    "🍵 มัจฉะลาเต้เย็น (Iced Matcha Latte)": 65,
+    "🧋 ชานมไต้หวัน (Taiwan Milk Tea)": 55,
     "🧋 ชาไทยเย็น (Iced Thai Tea)": 50,
-    "🍃 ชาเขียวนมเย็น (Iced Green Tea)": 50,
-    "🍫 โกโก้เย็น (Iced Cocoa)": 55,
-    "🍮 นมสดคาราเมล (Caramel Fresh Milk)": 55,
-    "🍓 สตรอว์เบอร์รีสมูทตี้ (Strawberry Smoothie)": 70
+    "🍵 ชาเขียวมัจฉะ (Matcha Green Tea)": 65,
+    "🍎 ชาผลไม้รวม (Mixed Fruit Tea)": 60,
 }
 
-st.header("📋 1. เลือกเมนูเครื่องดื่ม (10 เมนู)")
+bakery_menu = {
+    "🍰 เค้กช็อกโกแลต (Chocolate Cake)": 75,
+    "🍫 บราวนี่ (Brownie)": 45,
+    "🍪 คุกกี้ช็อกโกแลตชิพ (Cookie)": 35,
+    "🥐 ครัวซองต์เนยสด (Croissant)": 55,
+}
 
-# จัดวางเมนูแบ่งเป็น 2 คอลัมน์
+st.header("📋 1. เลือกเมนูสินค้า")
+
 col1, col2 = st.columns(2)
 
-total_cups = 0
+total_drinks = 0
+total_bakery = 0
 base_total = 0
 
-items_list = list(menu_items.items())
-half = len(items_list) // 2
-
-# คอลัมน์ที่ 1 (เมนูที่ 1 - 5)
+# คอลัมน์ที่ 1: เครื่องดื่ม
 with col1:
-    for name, price in items_list[:half]:
+    st.subheader("🥤 หมวดเครื่องดื่ม")
+    for name, price in drinks_menu.items():
         qty = st.number_input(f"{name} ({price} บาท)", min_value=0, step=1, key=name)
-        total_cups += qty
+        total_drinks += qty
         base_total += qty * price
 
-# คอลัมน์ที่ 2 (เมนูที่ 6 - 10)
+# คอลัมน์ที่ 2: ขนม / เบเกอรี
 with col2:
-    for name, price in items_list[half:]:
+    st.subheader("🥐 หมวดขนม / เบเกอรี")
+    for name, price in bakery_menu.items():
         qty = st.number_input(f"{name} ({price} บาท)", min_value=0, step=1, key=name)
-        total_cups += qty
+        total_bakery += qty
         base_total += qty * price
 
 st.markdown("---")
-st.subheader(f"📊 สรุปรายการ: **{total_cups}** แก้ว | ราคารวมเบื้องต้น: **{base_total:.2f}** บาท")
+st.subheader(
+    f"📊 สรุปรายการ: เครื่องดื่ม **{total_drinks}** แก้ว | ขนม **{total_bakery}** ชิ้น | ราคารวมเบื้องต้น: **{base_total:.2f}** บาท"
+)
 
 # ----------------------------------------------------
 # 2. เงื่อนไขส่วนลด (If-Else)
@@ -58,7 +62,7 @@ st.header("🏷️ 2. ส่วนลดและโปรโมชั่น")
 col_opt1, col_opt2 = st.columns(2)
 
 with col_opt1:
-    bring_own_cup = st.checkbox("🌱 ลูกค้านำแก้วมาเอง (ลด 5 บาท / แก้ว)")
+    bring_own_cup = st.checkbox("🌱 ลูกค้านำแก้วมาเอง (ลด 5 บาท / แก้วเครื่องดื่ม)")
 
 with col_opt2:
     is_member = st.checkbox("💳 บัตรสมาชิก jkop Club (ลด 10% จากยอดรวม)")
@@ -67,11 +71,11 @@ with col_opt2:
 discount = 0.0
 discount_details = []
 
-# เงื่อนไขที่ 1: ถ้าเอาแก้วมาเอง ลด 5 บาทต่อแก้ว
-if bring_own_cup and total_cups > 0:
-    cup_discount = total_cups * 5
+# เงื่อนไขที่ 1: ถ้าเอาแก้วมาเอง ลด 5 บาทต่อแก้วเครื่องดื่ม
+if bring_own_cup and total_drinks > 0:
+    cup_discount = total_drinks * 5
     discount += cup_discount
-    discount_details.append(f"🌱 ส่วนลดนำแก้วมาเอง ({total_cups} แก้ว x 5 บาท = -{cup_discount} บาท)")
+    discount_details.append(f"🌱 ส่วนลดนำแก้วมาเอง ({total_drinks} แก้ว x 5 บาท = -{cup_discount} บาท)")
 
 # เงื่อนไขที่ 2: ถ้าเป็นสมาชิก ลด 10% จากยอดรวม
 if is_member and base_total > 0:
@@ -112,9 +116,11 @@ st.header("💵 3. รับเงินและคิดเงินทอน"
 
 received_money = st.number_input("กรอกจำนวนเงินที่รับจากลูกค้า (บาท)", min_value=0.0, step=10.0, value=0.0)
 
+total_items = total_drinks + total_bakery
+
 if st.button("🧮 คำนวณเงินทอน"):
-    if total_cups == 0:
-        st.warning("⚠️ กรุณาเลือกสั่งเครื่องดื่มอย่างน้อย 1 แก้ว")
+    if total_items == 0:
+        st.warning("⚠️ กรุณาเลือกสั่งสินค้าอย่างน้อย 1 รายการ")
     elif received_money < final_price:
         st.error(f"❌ เงินไม่พอ! ขาดอีก {final_price - received_money:.2f} บาท")
     else:
