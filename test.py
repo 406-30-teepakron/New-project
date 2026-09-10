@@ -1,9 +1,9 @@
 import streamlit as st
 
-st.set_page_config(page_title="jkop cafe - Grand POS", page_icon="☕", layout="wide")
+st.set_page_config(page_title="jkop cafe - POS", page_icon="☕", layout="wide")
 
-st.title("☕ jkop cafe - Grand POS System")
-st.caption("ระบบบริหารจัดการ POS คิดเงินและส่วนลดระดับพรีเมียม (เมนูคาเฟ่มาตรฐานใหญ่)")
+st.title("☕ jkop cafe - POS System")
+st.caption("ระบบบริหารจัดการ POS คิดเงินและส่วนลด")
 
 coffee_menu = {
     "☕ เอสเปรสโซร้อน (Hot Espresso)": 50,
