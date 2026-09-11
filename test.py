@@ -1,8 +1,8 @@
 import streamlit as st
 
-st.set_page_config(page_title="jkop cafe - POS", page_icon="☕", layout="wide")
+st.set_page_config(page_title="Top cafe - POS", page_icon="☕", layout="wide")
 
-st.title("☕ jkop cafe - POS System")
+st.title("☕ Top cafe - POS System")
 st.caption("ระบบบริหารจัดการ POS คิดเงินและส่วนลด")
 
 coffee_menu = {
